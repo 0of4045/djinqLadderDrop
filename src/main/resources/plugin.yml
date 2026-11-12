@@ -1,5 +1,5 @@
 name: djinqLadderDrop
-version: 1.0.0
+version: 1.0.1
 main: dev.djinq.djinqladderdrop.DjinqLadderDrop
 api-version: '1.21'
 description: Lightweight ladder drop mechanic for Paper.
