@@ -1,0 +1,10 @@
+# djinqLadderDrop made by djinq
+prefix: '<#B3E342>[<#DFFFAC>LadderDrop<#B3E342>] '
+
+messages:
+  no-permission: '<#CACACA>You do not have <#E34242>permission<#CACACA>.'
+  enabled: '<#CACACA>Ladder drop is now <#B3E342>enabled<#CACACA>.'
+  disabled: '<#CACACA>Ladder drop is now <#E34242>disabled<#CACACA>.'
+  reload-success: '<#CACACA>Configuration <#B3E342>reloaded<#CACACA>.'
+  reload-failed: '<#CACACA>Configuration reload <#E34242>failed<#CACACA>. Check console for details.'
+  usage: '<#CACACA>Usage: <#E3B341>/ladderdrop [reload]'

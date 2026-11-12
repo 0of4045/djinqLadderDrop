@@ -1,0 +1,21 @@
+name: djinqLadderDrop
+version: 1.0.0
+main: dev.djinq.djinqladderdrop.DjinqLadderDrop
+api-version: '1.21'
+description: Lightweight ladder drop mechanic for Paper.
+author: djinq
+website: https://djinq.dev
+
+commands:
+  ladderdrop:
+    description: Toggles ladder drop globally.
+    usage: /ladderdrop [reload]
+    permission: djinqladderdrop.toggle
+
+permissions:
+  djinqladderdrop.toggle:
+    description: Allows /ladderdrop.
+    default: op
+  djinqladderdrop.reload:
+    description: Allows /ladderdrop reload.
+    default: op
