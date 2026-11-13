@@ -1,6 +1,8 @@
 package dev.djinq.djinqladderdrop;
 
 import java.util.List;
+import java.util.Locale;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -33,13 +35,21 @@ public final class LadderDropCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        plugin.messages().send(sender, plugin.toggle() ? "enabled" : "disabled");
+        Boolean enabled = plugin.toggle();
+        if (enabled == null) {
+            plugin.messages().send(sender, "toggle-failed");
+            return true;
+        }
+        plugin.messages().send(sender, enabled ? "enabled" : "disabled");
         return true;
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        return args.length == 1 && sender.hasPermission("djinqladderdrop.reload")
-                && "reload".startsWith(args[0].toLowerCase()) ? List.of("reload") : List.of();
+        if (args.length == 1 && sender.hasPermission("djinqladderdrop.reload")
+                && "reload".startsWith(args[0].toLowerCase(Locale.ROOT))) {
+            return List.of("reload");
+        }
+        return List.of();
     }
 }

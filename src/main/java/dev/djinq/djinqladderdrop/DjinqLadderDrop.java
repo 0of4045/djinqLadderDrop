@@ -1,7 +1,12 @@
 package dev.djinq.djinqladderdrop;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Objects;
+
 import org.bukkit.command.PluginCommand;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class DjinqLadderDrop extends JavaPlugin {
@@ -10,7 +15,6 @@ public final class DjinqLadderDrop extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        saveDefaultConfig();
         ResourceMigration.mergeMissingDefaults(this, "config.yml");
         ResourceMigration.mergeMissingDefaults(this, "messages.yml");
         messages = new MessageManager(this);
@@ -30,31 +34,41 @@ public final class DjinqLadderDrop extends JavaPlugin {
                         + "<#CACACA>| <#B3E342>djinq.dev <#CACACA>| <#B3E342>Loaded"));
     }
 
-    public boolean isLadderDropEnabled() {
-        return enabled;
-    }
-
-    public boolean toggle() {
-        enabled = !enabled;
-        getConfig().set("enabled", enabled);
-        saveConfig();
-        return enabled;
+    public Boolean toggle() {
+        try {
+            File file = new File(getDataFolder(), "config.yml");
+            YamlConfiguration config = new YamlConfiguration();
+            config.load(file);
+            boolean nextEnabled = !enabled;
+            config.set("enabled", nextEnabled);
+            config.save(file);
+            enabled = nextEnabled;
+            return enabled;
+        } catch (IOException | InvalidConfigurationException exception) {
+            getLogger().severe("Could not save ladder drop setting: " + exception.getMessage());
+            return null;
+        }
     }
 
     public boolean reloadPlugin() {
         try {
-            reloadConfig();
-            boolean nextEnabled = getConfig().getBoolean("enabled", true);
+            YamlConfiguration config = new YamlConfiguration();
+            config.load(new File(getDataFolder(), "config.yml"));
+            boolean nextEnabled = config.getBoolean("enabled", true);
             if (!messages.reload()) {
                 return false;
             }
 
             enabled = nextEnabled;
             return true;
-        } catch (RuntimeException exception) {
+        } catch (IOException | InvalidConfigurationException | RuntimeException exception) {
             getLogger().severe("Could not reload djinqLadderDrop configuration: " + exception.getMessage());
             return false;
         }
+    }
+
+    public boolean isLadderDropEnabled() {
+        return enabled;
     }
 
     public MessageManager messages() {
